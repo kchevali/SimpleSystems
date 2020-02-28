@@ -3,14 +3,5 @@
 
 *.cmake
 
-build/CMakeFiles/3.15.4/
+build/
 
-*.check_cache
-
-build/CMakeFiles/
-
-build/CMakeCache.txt
-
-build/main.exe_autogen/
-
-build/Makefile
