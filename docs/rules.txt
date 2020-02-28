@@ -1,0 +1,27 @@
+=======================
+RULES
+=======================
+-Objective: Create a virtual computer from the very basics that can compile and run a high level language
+-Every operation must be implemented in this machine ranging from the &, ^, |, +, -. *, / to if statments and for/while/do-while loops
+-Methods may be used freely
+-Any unavoidable exceptions will be listed below:
+
+=======================
+Int & Bit
+=======================
+-Most fundamental unit of the project
+-Allowed to use 'int' data type as storage
+-Allowed to use the '~', and the '&' operations from C++ to build a nand gate
+-Allowed to use the '>>', and the '<<' operations from C++ to implement bit shifting
+
+=======================
+Clock
+=======================
+-Syncs the machine
+-Allowed to use a single while loop
+
+=======================
+Bus
+=======================
+-Sends data between the different hardware of the computer
+-Allowed to use if statements during transmission

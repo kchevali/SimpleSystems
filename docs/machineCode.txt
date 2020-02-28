@@ -1,0 +1,144 @@
+Machine Code Language
+====================================================
+32 bit data
+
+Instruction: 16 bit
+Addressing: 16 bits (supports 65k RAM)
+
+Instruction Bus (16 bits)
+Address Bus (16 bits)
+Data Bus (32 bits)
+
+====================================================
+32 Instruction Bits:  AAAAAAAA AAAAAAAA 000BBBLL --------
+====================================================
+
+Output Bus(BBB)
+Left: isDataBus
+Mid: isAddressBus
+Right: isControlBus
+
+SOURCE/DESTINATION (LL) - push to data bus
+00 - PC
+01 - A
+10 - B
+11 - M
+
+VARIABLE
+00000000 - HALT
+00000001 - &
+00000010 - |
+00000011 - ^
+00000100 - +
+00000101 - -
+00000110 - *
+00000111 - /
+00001000 - %
+00001001 - >>
+00001010 - <<
+00001011 - >
+00001100 - <
+00001101 - >=
+00001110 - <=
+00001111 - ==
+00010000 - !=
+00010001 - ~
+00010010 - JNZ
+00010011 - JMP
+00010100 - LOAD
+00010101 - MOVE
+00010110 - CONST
+00010111 - RESET
+00011000 - INC
+00011001 - PRINT MEM
+11111111 - NOP
+
+
+
+====================================================
+Instruction Specification
+====================================================
+
+Controller Loop
+    CONTROLLER -> INST BUS
+    READ PC -> ADDR BUS
+    CONTROLLER -> INST BUS
+    READ M  -> ADDR BUS + INST BUS
+    EXEC
+    CONTROLLER -> INST BUS
+    INC PC -> NONE
+
+
+Read M:
+    ADDR Bus = A
+    READ M -> DATA Bus
+
+====================================================
+Data Types(32 bits)
+====================================================
+
+00 - SIGNED INTEGER
+01 - UNSIGNED INTEGER
+10 - CHAR
+11 - DOUBLE
+
+====================================================
+Examples
+====================================================
+
+
+Load CONST:
+----------
+
+LOAD CONST
+    ADDR: 1, Output: Data, Dest: Mem, Code: CONST
+    00000000 00000000 00010011 00010101
+    101
+DATA BUS -> A
+    ADDR: None, Output: None, Dest: A, Code: Load
+    00000000 00000000 00000001 00010100 
+
+ADD B = B + A
+    ADDR: None, Output: None, Dest: B, Code:Add
+    00000000 00000000 00000010 00000100
+
+MOVE A -> B:
+----------
+    ADDR: None, Output: None, Dest:B, Code
+
+JUMP ADDR IF A > B
+----------
+A > B to A
+READ A to Data
+JNZ (PC will)
+00000000 00000000 10000110 00001101
+00000000 00001000 10000000 00010011
+
+
+Brainstorm
+load constant to A
+move data between A/B/M
+push/pop M <-> A/B
+& | ^ && || + - * / between A/B and save to A
+! ~ >> << A
+> < >= <= == != between A/B and save to A
+jump to instruction
+
+RA WB
+RA WM
+
+====================================================
+Hardware Specification
+====================================================
+
+PC Functions
+Reset
+Load
+Increment
+Read
+
+Processor Functions
+Read/Load AB
+Run operation on A to B
+
+
