@@ -1,8 +1,9 @@
 #include <iostream>
-#include "bit.h"
-#include "computer.h"
-#include "int.h"
-#include "ram64.h"
+
+#include "../hardware/bit.h"
+#include "../hardware/computer.h"
+#include "../hardware/int.h"
+#include "../hardware/ram64.h"
 
 Int Hardware::hardwareCounter = 0;
 int main() {
