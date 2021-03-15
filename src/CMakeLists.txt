@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 project(main.exe)
+include_directories( ${CMAKE_SOURCE_DIR}/../include )
+
 
 # set(CMAKE_AUTOMOC ON)
 # set(CMAKE_AUTORCC ON)
@@ -34,38 +36,43 @@ SET(CMAKE_CXX_FLAGS  "-g")
 
 
 set (SOURCE
+    ../include/int.h
+    ../include/bit.h
+    ../include/cpu.h
+    ../include/register.h
+    ../include/ram.h
+    ../include/ram8.h
+    ../include/ram64.h
+    ../include/ram512.h
+    ../include/ram4k.h
+    ../include/pc.h
+    ../include/hardware.h
+    ../include/computer.h
+    ../include/controller.h
+    ../include/os.h
+    ../include/process.h
+
     run/main.cpp
-    hardware/int.h
     hardware/int.cpp
-    hardware/bit.h
     hardware/bit.cpp
-    hardware/cpu.h
     hardware/cpu.cpp
-    hardware/register.h
     hardware/register.cpp
-    hardware/ram.h
     hardware/ram.cpp
-    hardware/ram8.h
     hardware/ram8.cpp
-    hardware/ram64.h
     hardware/ram64.cpp
-    hardware/ram512.h
     hardware/ram512.cpp
-    hardware/ram4k.h
     hardware/ram4k.cpp
-    hardware/pc.h
     hardware/pc.cpp
-    hardware/hardware.h
     hardware/hardware.cpp
-    hardware/computer.h
     hardware/computer.cpp
-    hardware/controller.h
     hardware/controller.cpp
 
-    os/os.h
     os/os.cpp
+    os/process.cpp
 )
 
 add_executable(${PROJECT_NAME} ${SOURCE})
+
+
 
 # target_link_libraries(${PROJECT_NAME} Qt5::Widgets)

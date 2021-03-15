@@ -1,7 +1,7 @@
 #ifndef PROCESS_H
 #define PROCESS_H
 
-#include "../hardware/int.h"
+#include "int.h"
 
 class Process {
  public:

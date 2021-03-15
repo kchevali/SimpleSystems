@@ -1,7 +1,7 @@
-#include "../hardware/bit.h"
-#include "../hardware/computer.h"
-#include "../hardware/int.h"
-#include "../hardware/ram4k.h"
+#include "bit.h"
+#include "computer.h"
+#include "int.h"
+#include "ram4k.h"
 
 int main() {
   RAM4k ram = RAM4k();

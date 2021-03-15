@@ -1,8 +1,8 @@
 #ifndef OS_H
 #define OS_H
 
-#include "../hardware/computer.h"
-#include "../hardware/int.h"
+#include "computer.h"
+#include "int.h"
 
 class OS {
  public:

@@ -2,7 +2,7 @@
 
 #include "os.h"
 
-#include "../hardware/computer.h"
+#include "computer.h"
 
 OS::OS(Computer& computer) : computer(computer) {}
 
