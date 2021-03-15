@@ -43,6 +43,13 @@ class Int {
   Bit or2Way(const Int& i, const Int& j) const;
   Bit or32Way() const;
 
+ private:
+  friend std::ostream& operator<<(std::ostream& out, const Int& c);
+  friend class CPU;
+  friend class Bit;
+  friend class PC;
+  friend class Computer;
+
   void fullAdder(const Int& a, const Int& b, Bit& c, const Int& i);
   Int operator+(const Int& b) const;
   Int operator+=(const Int& b);
@@ -69,9 +76,6 @@ class Int {
   Bit operator<=(const Int& b) const;
   Bit operator>=(const Int& b) const;
 
-  friend std::ostream& operator<<(std::ostream& out, const Int& c);
-
- private:
   int a;
 };
 #endif

@@ -2,58 +2,61 @@ Machine Code Language
 ====================================================
 32 bit data
 
-Instruction: 16 bit
+Control: 16 bit
 Addressing: 16 bits (supports 65k RAM)
-
-Instruction Bus (16 bits)
-Address Bus (16 bits)
-Data Bus (32 bits)
+Data: 32 bits
 
 ====================================================
-32 Instruction Bits:  AAAAAAAA AAAAAAAA 000BBBLL --------
+32 Bit Instruction (Address + Control):  AAAAAAAA AAAAAAAA HHHBBB-- --------
 ====================================================
+
+HALT: 00000000 00000000
+
+Input(HHH)
+isPC[15]
+isCPU[14]
+isM[13]
 
 Output Bus(BBB)
-Left: isDataBus
-Mid: isAddressBus
-Right: isControlBus
+isDataBus[12]
+isAddressBus[11]
+isControlBus[10]
 
-SOURCE/DESTINATION (LL) - push to data bus
-00 - PC
-01 - A
-10 - B
-11 - M
+PC
+RESET - all 0s
+LOAD[1]
+CONST/INC[2]
+JMP[4]
+JNZ[5]
+JLT[6]
+JGT[7]
+JLE[8]
+JGE[9]
 
-VARIABLE
-00000000 - HALT
-00000001 - &
-00000010 - |
-00000011 - ^
-00000100 - +
-00000101 - -
-00000110 - *
-00000111 - /
-00001000 - %
-00001001 - >>
-00001010 - <<
-00001011 - >
-00001100 - <
-00001101 - >=
-00001110 - <=
-00001111 - ==
-00010000 - !=
-00010001 - ~
-00010010 - JNZ
-00010011 - JMP
-00010100 - LOAD
-00010101 - MOVE
-00010110 - CONST
-00010111 - RESET
-00011000 - INC
-00011001 - PRINT MEM
-11111111 - NOP
+CPU
+RESET - all 0s
+DEST A[0]=0
+DEST B[0]=1
+
+LOAD[1]
+INC[2]
+MOVE[3]
 
 
+
+&[4]=0, [5]=1
+|[4]=0, [6]=1
+^[4]=0, [7]=1
+~[4]=0, [8]=1
+
++[4]=1, [5]=1
+-[4]=1, [6]=1
+*[4]=1, [7]=1
+/[4]=1, [8]=1
+
+RAM
+LOAD[0]
+CONST[1]
 
 ====================================================
 Instruction Specification
@@ -91,8 +94,8 @@ Load CONST:
 ----------
 
 LOAD CONST
-    ADDR: 1, Output: Data, Dest: Mem, Code: CONST
-    00000000 00000000 00010011 00010101
+    Hardware: PC, MEM, Out: Address, Data, Code: INC, CONST
+    00000000 00000000 10111000 00000100
     101
 DATA BUS -> A
     ADDR: None, Output: None, Dest: A, Code: Load

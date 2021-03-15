@@ -1,55 +1,67 @@
 #include "cpu.h"
-#include <iostream>
 #include "bit.h"
 #include "int.h"
 #include "register.h"
+#include <iostream>
 
 CPU::CPU() : regA(), regB() {}
 void CPU::update(Int& dataBus, Int& addressBus, Int& controlBus) {
-  Bit isOutputData, isOutputAddress, isOutputControl, isDestPC, isDestA,
-      isDestB, isDestM;
-  Int code;
-  decode(controlBus, isOutputData, isOutputAddress, isOutputControl, isDestPC,
-         isDestA, isDestB, isDestM, code);
-
+  Bit isCPU = controlBus[CPUL];
+  Bit isDestB = isCPU & controlBus[0];
+  Bit isDestA = isCPU & ~isDestB;
   Int valA = regA.read(), valB = regB.read();
   Int x = isDestA.mux(valB, valA), y = isDestA.mux(valA, valB);
   Int out = 0;  // handles the RESET case
 
-  out = (code == AND).mux(out, x & y);
-  out = (code == OR).mux(out, x | y);
-  out = (code == XOR).mux(out, x ^ y);
-  out = (code == ADD).mux(out, x + y);
-  out = (code == SUB).mux(out, x - y);
-  out = (code == MULT).mux(out, x * y);
-  out = (code == DIV).mux(out, x / y);
-  out = (code == MOD).mux(out, x % y);
-  out = (code == RIGHT).mux(out, x >> y);
-  out = (code == LEFT).mux(out, x << y);
-  out = (code == GT).mux(out, Int(x > y));
-  out = (code == LT).mux(out, Int(x < y));
-  out = (code == GE).mux(out, Int(x >= y));
-  out = (code == LE).mux(out, Int(x <= y));
-  out = (code == EQUAL).mux(out, Int(x == y));
-  out = (code == NE).mux(out, Int(x != y));
-  out = (code == NOT).mux(out, ~x);
+  Bit isComplex = isCPU & controlBus[OP];
+  Bit isAdd = isComplex & controlBus[OP1];
+  Bit isSub = isComplex & controlBus[OP2];
+  Bit isMult = isComplex & controlBus[OP3];
+  Bit isDiv = isComplex & controlBus[OP4];
+
+  out = isAdd.mux(out, x + y);
+  out = isSub.mux(out, x - y);
+  out = isMult.mux(out, x * y);
+  out = isDiv.mux(out, x / y);
+
+  Bit isBasic = isCPU & (~isComplex);
+  Bit isAnd = isBasic & controlBus[OP1];
+  Bit isOr = isBasic & controlBus[OP2];
+  Bit isXor = isBasic & controlBus[OP3];
+  Bit isNot = isBasic & controlBus[OP4];
+
+  out = isAnd.mux(out, x & y);
+  out = isOr.mux(out, x | y);
+  out = isXor.mux(out, x ^ y);
+  out = isNot.mux(out, ~x);
 
   // load
-  out = (code == LOAD).mux(out, dataBus);
-
-  // inc
-  Bit isInc = code == INC;
-  out = (isDestA && isInc).mux(out, valA + 1);
-  out = (isDestB && isInc).mux(out, valB + 1);
+  Bit isLoad = isCPU & controlBus[LOAD];
+  out = isLoad.mux(out, dataBus);
 
   // move
-  Bit isMove = code == MOVE;
+  Bit isMove = controlBus[MOV];
   out = (isDestA && isMove).mux(out, valB);
   out = (isDestB && isMove).mux(out, valA);
 
+  // inc
+  Bit isInc = isCPU & controlBus[INC];
+  out = (isDestA && isInc).mux(out, valA + 1);
+  out = (isDestB && isInc).mux(out, valB + 1);
+
+  std::cout << "CPU | isDestPC: " << isCPU << " isLoad: " << isLoad
+            << " isInc: " << isInc << " isDestA: " << isDestA
+            << " isDestB: " << isDestB << " isMove: " << isMove << "\n";
+
   Int a = regA.update(out, isDestA);
   Int b = regB.update(out, isDestB);
+
+  Bit isOutputData = isCPU & controlBus[DATA];
+  Bit isOutputAddress = isCPU & controlBus[ADDR];
+  Bit isOutputControl = isCPU & controlBus[CONTROL];
   dataBus = isOutputData.mux(dataBus, out);
-  std::cout << "CPU UPDATE - A: " << a << " B: " << b << " OUT: " << dataBus
-            << "\n";
+  addressBus = isOutputAddress.mux(addressBus, out);
+  controlBus = isOutputControl.mux(controlBus, out);
+  std::cout << "CPU UPDATE - A: " << a << " B: " << b
+            << " OUT: " << hex(dataBus) << "\n";
 }

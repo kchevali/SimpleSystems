@@ -1,44 +1,41 @@
 
 
 #include "controller.h"
-#include <iostream>
 #include "computer.h"
 #include "int.h"
+#include <iostream>
 
 Controller::Controller(Computer& computer) : computer(computer) {
-  this->isHalt = false;
+  this->isHalt = 0;
 }
 void Controller::run() {
-  Int maxLoopCount = 10;
-  while ((!isHalt && (maxLoopCount -= 1) >= 0).getBool()) {
+  while ((!isHalt).getBool()) {
     std::cout << "\n====================\n";
 
     // READ PC -> ADDR BUS
-    std::cout << "LOADING PC TO ADDRESS BUS\n";
-    Int loadPC = encode(addressBit, destPC, NOP);
+    std::cout << "OUTPUTTING PC TO ADDRESS BUS\n";
+    Int loadPC = Int(1 << PCL) | Int(1 << ADDR);
     computer.setControlBus(loadPC);
     computer.updatePC();
 
     // READ M  -> ADDR BUS + INST BUS
-    std::cout << "LOADING MEM TO ADDRESS + CONTROL BUS\n";
-    Int loadMem = encode(addressBit | controlBit, destM, NOP);
+    std::cout << "\nOUTPUTTING MEM TO ADDRESS & CONTROL BUS\n";
+    Int loadMem = Int(1 << ML) | Int(1 << ADDR) | Int(1 << CONTROL) | Int(LOAD);
     computer.setControlBus(loadMem);
     computer.updateRAM();
 
     // EXEC
-    std::cout << "EXECUTING\n";
+    std::cout << "\nEXECUTING\n";
     computer.update();
 
     // INC PC -> NONE
-    std::cout << "INCREMENTING PC\n";
-    Int incPC = encode(addressBit, destPC, INC);
+    std::cout << "\nINCREMENTING PC\n";
+    Int incPC = Int(1 << PCL) | Int(1 << ADDR) | Int(1 << INC);
     computer.setControlBus(incPC);
     computer.updatePC();
   }
 }
 void Controller::update(Int& dataBus, Int& addressBus, Int& controlBus) {
-  Int code;
-  decode(controlBus, code);
-  isHalt = code == HALT;
+  isHalt = (~(addressBus.or32Way())) & (~(controlBus.or32Way()));
   std::cout << "CONTROLLER UPDATE - HALT: " << isHalt << "\n";
 }

@@ -1,0 +1,15 @@
+Hardware
+    Rewrite machineCode.txt - each instruction needs less interpretation
+    Hardware commands should be linked to single bits
+    Important operators can be executed outside of CPU (+, -, *, /)
+        -Should move operators from int.cpp to cpu.cpp  |
+
+Compiler
+    Create processes/applications
+        -Processes have different access
+        -Process allocates memory
+   Memory management
+        -Reserve memory for OS
+        -Partition memory for applications
+        -Determines if memory access is valid
+    Create Arrays, Strings

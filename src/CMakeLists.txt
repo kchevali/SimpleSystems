@@ -49,6 +49,10 @@ set (SOURCE
     hardware/ram8.cpp
     hardware/ram64.h
     hardware/ram64.cpp
+    hardware/ram512.h
+    hardware/ram512.cpp
+    hardware/ram4k.h
+    hardware/ram4k.cpp
     hardware/pc.h
     hardware/pc.cpp
     hardware/hardware.h

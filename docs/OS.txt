@@ -1,0 +1,40 @@
+OS Commands
+    Read/Write to Memory
+    Other Machine code Commands
+    Organize commands like HACK Language
+
+Memory Management Rules
+    Each process starts with commands at top of the memory block
+    Each process may have a stack at the bottom to track dynamic data
+    Block properties:
+        start pointer
+        stack base pointer(first memory address for stack)
+        end pointer(last memory address for process)
+
+============================================================================
+System Processes
+============================================================================
+Process 1: OS Bootup
+    Start PC at 0
+    Run until OS halt
+
+Process 2: Process Manager
+    Initialize Process Manager
+    Run each process and continue to next
+    After last active process reset to 0 and repeat
+
+    Characteristics:
+        Max number of processes: 32
+
+============================================================================
+
+
+============================================================================
+Protocols
+============================================================================
+Init Process Manager
+    
+
+Run Process Protocol
+    Read process memory address
+    PC -> go to address

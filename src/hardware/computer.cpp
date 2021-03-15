@@ -1,6 +1,5 @@
 #include "computer.h"
 #include <fstream>
-#include <iostream>
 #include "controller.h"
 #include "cpu.h"
 #include "pc.h"
@@ -42,6 +41,7 @@ void Computer::readFileToRAM() {
   std::string line;
   for (Int address = 0; in.good(); ++address) {
     in >> line;
+    std::cout << "RAM = " << line << "\n";
     // update(Int in, Bit load, Int address)
     ram.update(Int(stoi(line, 0, 2)), 1, address);
   }

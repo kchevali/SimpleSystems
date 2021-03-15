@@ -29,7 +29,7 @@ Int Int::operator^=(const Int& b) { return *this = *this ^ b; }
 void Int::set(const Int& i, const Bit& b) {
   *this = (Int(b) << i) | (*this & ~(Int(1) << i));
 }
-Bit Int::operator[](const Int& i) const { return Bit(*this >> i) & Bit(1); }
+Bit Int::operator[](const Int& i) const { return *this >> i; }
 
 Bit Int::mux4Way(const Bit& a, const Bit& b, const Bit& c, const Bit& d) const {
   return (*this)[1].mux((*this)[0].mux(a, b), (*this)[0].mux(c, d));

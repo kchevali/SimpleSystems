@@ -19,9 +19,3 @@ Clock
 =======================
 -Syncs the machine
 -Allowed to use a single while loop
-
-=======================
-Bus
-=======================
--Sends data between the different hardware of the computer
--Allowed to use if statements during transmission
